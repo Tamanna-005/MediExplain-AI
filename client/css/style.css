@@ -1378,3 +1378,370 @@ button:focus-visible {
         width: 92%;
     }
 }
+
+/* =========================================================
+   REGISTER / AUTH PAGE
+   ========================================================= */
+
+.auth-page {
+    min-height: calc(100vh - 72px);
+
+    padding: 70px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(169, 139, 232, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(243, 229, 250, 0.75),
+            transparent 32%
+        ),
+        var(--background);
+}
+
+
+/* =========================================================
+   AUTH CARD
+   ========================================================= */
+
+.auth-card {
+    width: min(480px, 100%);
+
+    padding: 42px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-card);
+}
+
+
+/* =========================================================
+   AUTH HEADER
+   ========================================================= */
+
+.auth-header {
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+
+.auth-eyebrow {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    padding: 6px 12px;
+
+    background: var(--lavender-soft);
+
+    color: var(--plum);
+
+    border: 1px solid var(--border);
+
+    border-radius: 999px;
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+}
+
+
+.auth-header h1 {
+    margin-bottom: 10px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 2.25rem;
+
+    line-height: 1.15;
+
+    color: var(--heading);
+}
+
+
+.auth-header p {
+    font-size: 0.88rem;
+
+    line-height: 1.6;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+#register-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.form-group label {
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    color: var(--heading);
+}
+
+
+.form-group input {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    background: var(--white);
+
+    color: var(--heading);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 0.88rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.form-group input::placeholder {
+    color: #AAA1B2;
+}
+
+
+.form-group input:focus {
+    border-color: var(--lavender);
+
+    box-shadow:
+        0 0 0 4px rgba(169, 139, 232, 0.13);
+}
+
+
+.form-group input:hover {
+    border-color: #CFC2DF;
+}
+
+
+/* Password hint */
+
+.form-hint {
+    margin-top: -2px;
+
+    font-size: 0.72rem;
+
+    color: var(--muted);
+}
+
+
+/* Error messages */
+
+.form-error {
+    min-height: 16px;
+
+    font-size: 0.72rem;
+
+    color: #8B5E7A;
+}
+
+
+/* =========================================================
+   TERMS CHECKBOX
+   ========================================================= */
+
+.form-checkbox {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 2px;
+}
+
+
+.form-checkbox input {
+    width: 17px;
+
+    height: 17px;
+
+    flex-shrink: 0;
+
+    margin-top: 3px;
+
+    accent-color: var(--lavender-dark);
+
+    cursor: pointer;
+}
+
+
+.form-checkbox label {
+    font-size: 0.74rem;
+
+    line-height: 1.55;
+
+    color: var(--muted);
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.form-submit {
+    width: 100%;
+
+    margin-top: 4px;
+
+    padding: 14px 20px;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   AUTH FOOTER
+   ========================================================= */
+
+.auth-footer {
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+
+    text-align: center;
+
+    font-size: 0.82rem;
+
+    color: var(--muted);
+}
+
+
+.auth-footer a {
+    margin-left: 4px;
+
+    color: var(--lavender-dark);
+
+    font-weight: 600;
+}
+
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Header question */
+
+.auth-question {
+    font-size: 0.78rem;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   REGISTER PAGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .auth-page {
+        min-height: auto;
+
+        padding: 50px 20px 70px;
+    }
+
+
+    .auth-card {
+        padding: 32px 24px;
+    }
+
+
+    .auth-header h1 {
+        font-size: 2rem;
+    }
+
+
+    .auth-question {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .auth-page {
+        padding: 35px 15px 55px;
+    }
+
+
+    .auth-card {
+        padding: 28px 20px;
+
+        border-radius: 20px;
+    }
+
+
+    .auth-header h1 {
+        font-size: 1.8rem;
+    }
+
+}
+/* =========================
+   FORM VALIDATION STATES
+   ========================= */
+
+.auth-input.input-error {
+    border-color: #D96C8A;
+    background-color: #FFF7F9;
+}
+
+.auth-input.input-success {
+    border-color: #78B89A;
+    background-color: #F7FCF9;
+}
+
+.form-error {
+    display: block;
+    min-height: 18px;
+    margin-top: 6px;
+    color: #C65373;
+    font-size: 0.82rem;
+}
