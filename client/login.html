@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Login to your MediExplain AI account."
+    >
+
+    <title>Login | MediExplain AI</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <nav aria-label="Main navigation">
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="MediExplain AI Home"
+            >
+                MediExplain AI
+            </a>
+
+            <div class="nav-links">
+
+                <span class="auth-question">
+                    Don't have an account?
+                </span>
+
+                <a
+                    href="register.html"
+                    class="button button-secondary button-small"
+                >
+                    Create Account
+                </a>
+
+            </div>
+
+        </nav>
+    </header>
+
+
+    <main class="auth-page">
+
+        <section
+            class="auth-card"
+            aria-labelledby="login-title"
+        >
+
+            <div class="auth-header">
+
+                <span class="auth-eyebrow">
+                    WELCOME BACK
+                </span>
+
+                <h1 id="login-title">
+                    Welcome back
+                </h1>
+
+                <p>
+                    Login to continue understanding your
+                    medical reports in simpler language.
+                </p>
+
+            </div>
+
+
+            <form
+                id="login-form"
+                novalidate
+            >
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <small
+                        class="form-error"
+                        id="email-error"
+                    ></small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <small
+                        class="form-error"
+                        id="password-error"
+                    ></small>
+
+                </div>
+
+
+                <div class="form-options">
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                    <a
+                        href="#"
+                        class="forgot-password"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button button-primary form-submit"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <p class="auth-footer">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Create one
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            &copy; 2026 MediExplain AI
+        </p>
+
+        <p>
+            For educational purposes only.
+            Not a substitute for professional medical advice.
+        </p>
+
+    </footer>
+    <script src="./js/login.js?v=1"></script>
+
+</body>
+
+</html>

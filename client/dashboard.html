@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="MediExplain AI dashboard for understanding medical reports."
+    >
+
+    <title>Dashboard | MediExplain AI</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <nav aria-label="Main navigation">
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="MediExplain AI Home"
+            >
+                MediExplain AI
+            </a>
+
+            <div class="nav-links">
+
+                <a
+                    href="#"
+                    class="dashboard-link"
+                >
+                    My Reports
+                </a>
+
+                <a
+                    href="#"
+                    class="dashboard-link"
+                >
+                    Profile
+                </a>
+
+               <button
+    type="button"
+    id="logout-button"
+    class="button button-secondary button-small"
+>
+    Logout
+</button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main class="dashboard-page">
+
+        <section class="dashboard-hero">
+
+            <div>
+
+                <span class="auth-eyebrow">
+                    YOUR DASHBOARD
+                </span>
+
+                <h1>
+                    Understand your reports,
+                    <span>more simply.</span>
+                </h1>
+
+                <p>
+                    Upload a medical report and get a simpler,
+                    educational explanation of the information
+                    it contains.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-disclaimer">
+
+                <strong>
+                    Important
+                </strong>
+
+                <p>
+                    MediExplain AI provides educational
+                    information only. It does not diagnose
+                    conditions or replace professional
+                    medical advice.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section
+            class="dashboard-upload"
+            aria-labelledby="upload-title"
+        >
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <span class="auth-eyebrow">
+                        NEW REPORT
+                    </span>
+
+                    <h2 id="upload-title">
+                        Upload a medical report
+                    </h2>
+
+                    <p>
+                        PDF and image support will be available
+                        here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="upload-box">
+
+                <div class="upload-icon">
+                    +
+                </div>
+
+                <h3>
+                    Upload your report
+                </h3>
+
+                <p>
+                    Drag and drop your file here or choose
+                    a file from your device.
+                </p>
+
+                <button
+                    type="button"
+                    class="button button-primary"
+                >
+                    Choose File
+                </button>
+
+                <small>
+                    Supported formats will include PDF,
+                    JPG and PNG.
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <section
+            class="dashboard-reports"
+            aria-labelledby="reports-title"
+        >
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <span class="auth-eyebrow">
+                        HISTORY
+                    </span>
+
+                    <h2 id="reports-title">
+                        Your recent reports
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="empty-reports">
+
+                <h3>
+                    No reports yet
+                </h3>
+
+                <p>
+                    Your uploaded reports will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            &copy; 2026 MediExplain AI
+        </p>
+
+        <p>
+            For educational purposes only.
+            Not a substitute for professional medical advice.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
