@@ -119,7 +119,7 @@
 
                     <small
                         class="form-error"
-                        id="full-name-error"
+                        id="name-error"
                     ></small>
 
                 </div>
@@ -169,14 +169,20 @@
                         required
                     >
 
-                    <small class="form-hint">
-                        Use at least 8 characters.
-                    </small>
+                   <div class="password-strength">
+    <div class="strength-bar">
+        <span id="strength-fill"></span>
+    </div>
 
-                    <small
-                        class="form-error"
-                        id="password-error"
-                    ></small>
+    <small id="strength-text">
+        Password strength
+    </small>
+</div>
+
+<small
+    class="form-error"
+    id="password-error"
+></small>
 
                 </div>
 
@@ -226,6 +232,11 @@
                     </label>
 
                 </div>
+
+                <small
+                    class="form-error"
+                    id="terms-error"
+                ></small>
 
 
 
@@ -278,6 +289,9 @@
 
     </footer>
 
+
+    <!-- Registration JavaScript -->
+    <script src="./js/register.js?v=1"></script>
 
 </body>
 
