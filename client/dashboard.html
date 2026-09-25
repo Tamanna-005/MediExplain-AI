@@ -148,16 +148,24 @@
                     a file from your device.
                 </p>
 
-                <button
-                    type="button"
-                    class="button button-primary"
-                >
-                    Choose File
-                </button>
+                <input
+    type="file"
+    id="report-file"
+    accept=".pdf,.jpg,.jpeg,.png"
+    hidden
+>
+
+<button
+    type="button"
+    id="choose-file-button"
+    class="button button-primary"
+>
+    Choose File
+</button>
+<p id="selected-file" class="selected-file" aria-live="polite">No file selected</p>
 
                 <small>
-                    Supported formats will include PDF,
-                    JPG and PNG.
+                   Supported formats: PDF, JPG and PNG.
                 </small>
 
             </div>
@@ -216,6 +224,8 @@
         </p>
 
     </footer>
+
+    <script src="./js/dashboard.js?v=1"></script>
 
 </body>
 

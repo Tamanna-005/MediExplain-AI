@@ -2036,3 +2036,23 @@ button:focus-visible {
     }
 
 }
+
+/* Selected file */
+
+.selected-file {
+    margin-top: 14px;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Selected upload state */
+
+.upload-box.file-selected {
+    border-color: var(--lavender);
+    background-color: var(--lavender-pale);
+}
+
+.upload-box.file-selected .upload-icon {
+    background-color: var(--lavender-soft);
+}
