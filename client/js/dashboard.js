@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedFile =
     document.getElementById("selected-file");
 
+    const analyzeButton=document.getElementById("analyze-button");
+
 
     logoutButton.addEventListener("click", function () {
 
@@ -28,6 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
         reportFile.click();
 
     });
+
+    analyzeButton.addEventListener("click", function () {
+
+    if (!reportFile.files.length) {
+        return;
+    }
+
+    selectedFile.textContent =
+        "Report selected. Analysis will be available soon.";
+
+});
 
    reportFile.addEventListener("change", function () {
 
@@ -58,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         reportFile.value = "";
 
+        analyzeButton.disabled = true;
+
         return;
     }
 
@@ -70,10 +85,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     reportFile.value = "";
 
+    analyzeButton.disabled = true;
+
     return;
 }
 
     selectedFile.textContent = file.name;
+
+    analyzeButton.disabled = false;
 
     uploadBox.classList.add("file-selected");
 
