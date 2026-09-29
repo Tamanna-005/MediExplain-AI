@@ -3,13 +3,25 @@ const express = require("express");
 const cors=require("cors");
 const connectDB = require("./config/db");
 const app = express();
-
+const authMiddleware = require("./middleware/authMiddleware");
+const reportRoutes = require("./routes/reportRoutes");
 
 const authRoutes=require("./routes/authRoutes");
 
 app.use(express.json());
 app.use(cors());
 app.use("/api/auth", authRoutes);
+app.use("/api/reports", reportRoutes);
+
+app.get("/api/test-protected", authMiddleware, function (req, res) {
+
+    res.status(200).json({
+        success: true,
+        message: "You have access to this protected route",
+        userId: req.user.userId
+    });
+
+});
 
 const PORT = 5000;
 
@@ -33,6 +45,8 @@ app.post("/api/test", function (req,res){
         received: data
     })
 });
+
+
 
 
 connectDB();

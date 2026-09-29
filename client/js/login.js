@@ -3,31 +3,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("login-form");
 
     const emailInput = document.getElementById("email");
+
     const passwordInput = document.getElementById("password");
 
     const emailError = document.getElementById("email-error");
+
     const passwordError = document.getElementById("password-error");
 
 
     function showError(input, errorElement, message) {
 
         input.classList.remove("input-success");
+
         input.classList.add("input-error");
 
         errorElement.textContent = message;
+
     }
 
 
     function showSuccess(input, errorElement) {
 
         input.classList.remove("input-error");
+
         input.classList.add("input-success");
 
         errorElement.textContent = "";
+
     }
 
 
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -35,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         // Validate email
-
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (emailInput.value.trim() === "") {
@@ -61,11 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             showSuccess(emailInput, emailError);
+
         }
 
 
         // Validate password
-
         if (passwordInput.value === "") {
 
             showError(
@@ -79,22 +84,75 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             showSuccess(passwordInput, passwordError);
+
         }
 
 
-        // Temporary success
+        // Stop if frontend validation fails
+        if (!isValid) {
+            return;
+        }
 
-       if (isValid) {
 
-    window.location.href = "dashboard.html";
+        // Send login request to backend
+        try {
 
-}
+            const response = await fetch(
+                "http://localhost:5000/api/auth/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: emailInput.value.trim(),
+                        password: passwordInput.value
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            // Login failed
+            if (!response.ok) {
+
+                showError(
+                    passwordInput,
+                    passwordError,
+                    data.message || "Login failed."
+                );
+
+                return;
+            }
+
+
+          // Login successful
+localStorage.setItem("token", data.token); // store token in browser
+
+alert(data.message);
+
+window.location.href = "dashboard.html";
+
+        } catch (error) {
+
+            console.error("Login error:", error);
+
+            showError(
+                passwordInput,
+                passwordError,
+                "Unable to connect to the server. Please try again."
+            );
+
+        }
 
     });
 
 
     // Email real-time validation
-
     emailInput.addEventListener("input", function () {
 
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -118,13 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             showSuccess(emailInput, emailError);
+
         }
 
     });
 
 
     // Password real-time validation
-
     passwordInput.addEventListener("input", function () {
 
         if (passwordInput.value === "") {
@@ -138,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             showSuccess(passwordInput, passwordError);
+
         }
 
     });

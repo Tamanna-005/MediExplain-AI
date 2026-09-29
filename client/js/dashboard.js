@@ -1,5 +1,36 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+        const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch("http://localhost:5000/api/test-protected", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (!data.success) {
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+            return;
+        }
+
+        console.log("Authenticated user:", data.userId);
+
+    })
+    .catch(error => {
+
+        console.error("Authentication error:", error);
+
+    });
+
     const uploadBox =
     document.querySelector(".upload-box"); 
 
@@ -19,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     logoutButton.addEventListener("click", function () {
-
+localStorage.removeItem("token");
         window.location.href = "index.html";
 
     });
