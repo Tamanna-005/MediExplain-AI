@@ -1,3 +1,4 @@
+console.log("LATEST DASHBOARD JS LOADED");
 document.addEventListener("DOMContentLoaded", function () {
 
         const token = localStorage.getItem("token");
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const reportFile =
         document.getElementById("report-file");
+        console.log("Report file input:", reportFile);
 
         const selectedFile =
     document.getElementById("selected-file");
@@ -57,19 +59,86 @@ localStorage.removeItem("token");
 
 
     chooseFileButton.addEventListener("click", function () {
+    reportFile.click();
+});
 
-        reportFile.click();
+reportFile.addEventListener("change", function () {
+    console.log("Selected files:", reportFile.files.length);
+    console.log("Selected file:", reportFile.files[0]);
+});
 
-    });
-
-    analyzeButton.addEventListener("click", function () {
+    analyzeButton.addEventListener("click", async function () {
+        console.log("ANALYZE CLICK EVENT WORKING");
+console.log("Analyze button clicked");
+console.log("Files available:", reportFile.files.length);
 
     if (!reportFile.files.length) {
+        selectedFile.textContent = "Please select a report first.";
         return;
     }
 
-    selectedFile.textContent =
-        "Report selected. Analysis will be available soon.";
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const file = reportFile.files[0];
+
+    // Prepare the file for upload
+    const formData = new FormData();
+    formData.append("report", file);
+
+    try {
+
+        analyzeButton.disabled = true;
+        selectedFile.textContent = "Uploading report...";
+
+        const response = await fetch(
+            "http://localhost:5000/api/reports/upload",
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            }
+        );
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || "Report upload failed."
+            );
+        }
+
+        selectedFile.textContent =
+            "Report uploaded successfully!";
+
+        console.log("Uploaded report:", data.report);
+
+    } catch (error) {
+
+        console.error("Upload error:", error);
+
+        selectedFile.textContent =
+            error.message === "Failed to fetch"
+                ? "Cannot connect to the server. Please try again."
+                : error.message;
+
+    } finally {
+
+        analyzeButton.disabled = false;
+
+    }
 
 });
 
