@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +23,6 @@
 <body>
 
     <header>
-
         <nav aria-label="Main navigation">
 
             <a
@@ -35,41 +35,31 @@
 
             <div class="nav-links">
 
-                <a
-                    href="#"
-                    class="dashboard-link"
-                >
+                <a href="#reports-title" class="dashboard-link">
                     My Reports
                 </a>
 
-                <a
-                    href="#"
-                    class="dashboard-link"
-                >
+                <a href="#" class="dashboard-link">
                     Profile
                 </a>
 
-               <button
-    type="button"
-    id="logout-button"
-    class="button button-secondary button-small"
->
-    Logout
-</button>
+                <button
+                    type="button"
+                    id="logout-button"
+                    class="button button-secondary button-small"
+                >
+                    Logout
+                </button>
 
             </div>
-
         </nav>
-
     </header>
-
 
     <main class="dashboard-page">
 
         <section class="dashboard-hero">
 
             <div>
-
                 <span class="auth-eyebrow">
                     YOUR DASHBOARD
                 </span>
@@ -84,15 +74,11 @@
                     educational explanation of the information
                     it contains.
                 </p>
-
             </div>
-
 
             <div class="dashboard-disclaimer">
 
-                <strong>
-                    Important
-                </strong>
+                <strong>Important</strong>
 
                 <p>
                     MediExplain AI provides educational
@@ -105,7 +91,6 @@
 
         </section>
 
-
         <section
             class="dashboard-upload"
             aria-labelledby="upload-title"
@@ -114,7 +99,6 @@
             <div class="dashboard-section-header">
 
                 <div>
-
                     <span class="auth-eyebrow">
                         NEW REPORT
                     </span>
@@ -124,69 +108,63 @@
                     </h2>
 
                     <p>
-                        PDF and image support will be available
-                        here.
+                        Choose a PDF or supported image of your
+                        medical report to upload securely.
                     </p>
-
                 </div>
 
             </div>
-
 
             <div class="upload-box">
 
-                <div class="upload-icon">
-                    +
-                </div>
+                <div class="upload-icon">+</div>
 
-                <h3>
-                    Upload your report
-                </h3>
+                <h3>Upload your report</h3>
 
                 <p>
-                    Drag and drop your file here or choose
-                    a file from your device.
+                    Choose a file from your device.
                 </p>
 
                 <input
-    type="file"
-    id="report-file"
-    accept=".pdf,.jpg,.jpeg,.png"
-    hidden
->
+                    type="file"
+                    id="report-file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    hidden
+                >
 
-<button
-    type="button"
-    id="choose-file-button"
-    class="button button-primary"
->
-    Choose File
-</button>
+                <button
+                    type="button"
+                    id="choose-file-button"
+                    class="button button-primary"
+                >
+                    Choose File
+                </button>
 
-<p
-    id="selected-file"
-    class="selected-file"
-    aria-live="polite"
->
-    No file selected
-</p>
+                <p
+                    id="selected-file"
+                    class="selected-file"
+                    aria-live="polite"
+                >
+                    No file selected
+                </p>
 
-<button
-    type="button"
-    id="analyze-button"
-    class="button button-primary"
-    disabled
->
-    Analyze Report
-</button>
+                <button
+                    type="button"
+                    id="analyze-button"
+                    class="button button-primary"
+                    disabled
+                >
+                    Upload Report
+                </button>
 
-<small>
-    Supported formats: PDF, JPG and PNG.
-</small>
+                <small>
+                    Supported formats: PDF, JPG and PNG.
+                    Maximum size: 10 MB.
+                </small>
+
             </div>
 
         </section>
-
 
         <section
             class="dashboard-reports"
@@ -196,7 +174,6 @@
             <div class="dashboard-section-header">
 
                 <div>
-
                     <span class="auth-eyebrow">
                         HISTORY
                     </span>
@@ -205,20 +182,26 @@
                         Your recent reports
                     </h2>
 
+                    <p>
+                        View the reports you have uploaded.
+                    </p>
                 </div>
 
             </div>
 
+            <div
+                id="report-history"
+                class="report-history"
+                aria-live="polite"
+            >
 
-            <div class="empty-reports">
+                <div class="empty-reports">
+                    <h3>Loading your reports...</h3>
 
-                <h3>
-                    No reports yet
-                </h3>
-
-                <p>
-                    Your uploaded reports will appear here.
-                </p>
+                    <p>
+                        Please wait while we retrieve your report history.
+                    </p>
+                </div>
 
             </div>
 
@@ -226,12 +209,9 @@
 
     </main>
 
-
     <footer>
 
-        <p>
-            &copy; 2026 MediExplain AI
-        </p>
+        <p>&copy; 2026 MediExplain AI</p>
 
         <p>
             For educational purposes only.
@@ -240,7 +220,7 @@
 
     </footer>
 
-    <script src="./js/dashboard.js?v=2"></script>
+    <script src="./js/dashboard.js?v=3"></script>
 
 </body>
 

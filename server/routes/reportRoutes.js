@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const Report = require("../models/Report");
 const authMiddleware = require("../middleware/authMiddleware");
+const fs = require("fs/promises");
 
 const router = express.Router();
 
@@ -100,6 +101,88 @@ router.post(
 
     }
 );
+
+
+ // Get report history for the logged-in user
+router.get("/", authMiddleware, async function (req, res) {
+    try {
+        const reports = await Report.find({
+            userId: req.user.userId
+        })
+        .select("-filePath")
+        .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            reports: reports
+        });
+
+    } catch (error) {
+        console.error("Report history error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Server error while fetching report history"
+        });
+    }
+});
+
+
+ // Delete a report belonging to the logged-in user
+router.delete("/:id", authMiddleware, async function (req, res) {
+    try {
+        if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid report ID"
+            });
+        }
+
+        const report = await Report.findOne({
+            _id: req.params.id,
+            userId: req.user.userId
+        });
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found"
+            });
+        }
+
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            path.basename(report.filePath)
+        );
+
+        // Remove the stored file if it exists
+        try {
+            await fs.unlink(filePath);
+        } catch (error) {
+            if (error.code !== "ENOENT") {
+                throw error;
+            }
+        }
+
+        // Remove the report record from MongoDB
+        await report.deleteOne();
+
+        return res.status(200).json({
+            success: true,
+            message: "Report deleted successfully"
+        });
+
+    } catch (error) {
+        console.error("Report deletion error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error while deleting report"
+        });
+    }
+});
 
 
 module.exports = router;

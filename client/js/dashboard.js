@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         console.log("Authenticated user:", data.userId);
+        
+loadReportHistory();
+
 
     })
     .catch(error => {
@@ -197,5 +200,83 @@ console.log("Files available:", reportFile.files.length);
     uploadBox.classList.add("file-selected");
 
 });
+
+
+async function loadReportHistory() {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+            "http://localhost:5000/api/reports",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || "Could not load report history"
+            );
+        }
+
+       displayReportHistory(data.reports);
+
+    } catch (error) {
+        console.error("Report history error:", error);
+    }
+}
+
+function displayReportHistory(reports) {
+    const historyContainer =
+        document.getElementById("report-history");
+
+    if (!historyContainer) {
+        console.error("Report history container not found.");
+        return;
+    }
+
+    if (!reports || reports.length === 0) {
+        historyContainer.innerHTML = `
+            <div class="empty-reports">
+                <h3>No reports yet</h3>
+                <p>Your uploaded reports will appear here.</p>
+            </div>
+        `;
+        return;
+    }
+
+    historyContainer.replaceChildren();
+
+    reports.forEach(function (report) {
+        const reportCard = document.createElement("article");
+        reportCard.className = "report-card";
+
+        const reportName = document.createElement("h3");
+        reportName.textContent = report.fileName;
+
+        const reportType = document.createElement("p");
+        reportType.textContent =
+            "File type: " + report.fileType;
+
+        const reportDate = document.createElement("p");
+        reportDate.textContent =
+            "Uploaded: " +
+            new Date(report.createdAt).toLocaleString();
+
+        reportCard.append(
+            reportName,
+            reportType,
+            reportDate
+        );
+
+        historyContainer.appendChild(reportCard);
+    });
+}
+
 
 });
