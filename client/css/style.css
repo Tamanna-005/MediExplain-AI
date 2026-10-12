@@ -439,127 +439,133 @@ nav {
 }
 
 
-/* =========================================================
-   8. MEDICAL REPORT CARD
-   ========================================================= */
+/* =========================================
+   MEDIEXPLAIN AI — REPORT HISTORY
+   ========================================= */
 
-.report-card {
+.dashboard-reports {
+    width: 100%;
+}
+
+.report-history {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* Individual report card */
+.report-history .report-card {
     position: relative;
-
-    z-index: 2;
-
-    width: 390px;
-
-    padding: 28px;
-
-    background: var(--white);
-
-    border: 1px solid var(--border);
-
-    border-radius: 24px;
-
-    box-shadow: var(--shadow-card);
-
-    transform: rotate(2deg);
-}
-
-
-/* Report heading */
-
-.report-header {
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
 
-    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 190px;
+    box-sizing: border-box;
+    padding: 24px;
 
-    justify-content: space-between;
+    background: #FFFFFF;
+    border: 1px solid #E6DDF0;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(75, 53, 103, 0.05);
 
-    gap: 20px;
+    transform: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
+.report-history .report-card:hover {
+    transform: translateY(-3px);
+    border-color: #C9B4ED;
+    box-shadow: 0 10px 25px rgba(75, 53, 103, 0.09);
+}
 
-.card-label {
-    display: block;
+/* File heading */
+.report-history .report-card h3 {
+    margin: 0 0 16px;
+    padding-right: 4px;
 
-    margin-bottom: 5px;
-
-    color: var(--lavender-dark);
-
-    font-size: 0.62rem;
-
+    color: #30243B;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
     font-weight: 700;
+    line-height: 1.5;
 
-    letter-spacing: 0.12em;
+    overflow-wrap: anywhere;
 }
 
-
-.report-header h3 {
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 1.25rem;
-
-    color: var(--heading);
-}
-
-
-/* PDF badge */
-
-.report-badge {
-    padding: 6px 10px;
-
-    background: var(--lavender-soft);
-
-    color: var(--plum-dark);
-
-    border-radius: 8px;
-
-    font-size: 0.7rem;
-
-    font-weight: 700;
-}
-
-
-/* Divider */
-
-.report-divider {
-    height: 1px;
-
-    margin: 21px 0;
-
-    background: var(--border);
-}
-
-
-/* Report values */
-
-.report-row {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 13px 0;
-
-    border-bottom: 1px solid var(--border);
-
+/* File information */
+.report-history .report-card p {
+    margin: 0 0 7px;
+    color: #7E7388;
     font-size: 0.84rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
+/* Delete action */
+.report-history .report-card .button-danger {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 9px 16px;
 
-.report-row:last-child {
-    border-bottom: none;
+    background: #FFF1F2;
+    color: #B42332;
+    border: 1px solid #F3D0D4;
+    border-radius: 9px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
-
-.report-row span {
-    color: var(--muted);
+.report-history .report-card .button-danger:hover {
+    background: #FFE2E5;
+    border-color: #EAB4BB;
+    transform: none;
 }
 
+.report-history .report-card .button-danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-.report-row strong {
-    color: var(--plum-dark);
+/* Empty history message */
+.report-history .empty-reports {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px 24px;
+
+    background: #FFFFFF;
+    border: 1px dashed #D8C8ED;
+    border-radius: 18px;
+    box-shadow: none;
+}
+
+/* Tablet and mobile layout */
+@media (max-width: 760px) {
+    .report-history {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .report-history .report-card {
+        min-height: 175px;
+        padding: 20px;
+    }
 }
 
 

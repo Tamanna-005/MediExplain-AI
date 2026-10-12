@@ -231,6 +231,7 @@ async function loadReportHistory() {
     }
 }
 
+
 function displayReportHistory(reports) {
     const historyContainer =
         document.getElementById("report-history");
@@ -240,17 +241,23 @@ function displayReportHistory(reports) {
         return;
     }
 
+    historyContainer.replaceChildren();
+
     if (!reports || reports.length === 0) {
-        historyContainer.innerHTML = `
-            <div class="empty-reports">
-                <h3>No reports yet</h3>
-                <p>Your uploaded reports will appear here.</p>
-            </div>
-        `;
+        const emptyState = document.createElement("div");
+        emptyState.className = "empty-reports";
+
+        const heading = document.createElement("h3");
+        heading.textContent = "No reports yet";
+
+        const message = document.createElement("p");
+        message.textContent =
+            "Your uploaded reports will appear here.";
+
+        emptyState.append(heading, message);
+        historyContainer.appendChild(emptyState);
         return;
     }
-
-    historyContainer.replaceChildren();
 
     reports.forEach(function (report) {
         const reportCard = document.createElement("article");
@@ -268,10 +275,78 @@ function displayReportHistory(reports) {
             "Uploaded: " +
             new Date(report.createdAt).toLocaleString();
 
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "button button-danger";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", async function () {
+            const confirmed = window.confirm(
+                `Are you sure you want to delete "${report.fileName}"?`
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Deleting...";
+
+            try {
+                const response = await fetch(
+                    `http://localhost:5000/api/reports/${encodeURIComponent(report._id || report.id)}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    localStorage.removeItem("token");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "Could not delete report."
+                    );
+                }
+
+                reportCard.remove();
+
+                if (!historyContainer.querySelector(".report-card")) {
+                    displayReportHistory([]);
+                }
+
+            } catch (error) {
+                console.error("Delete report error:", error);
+
+                window.alert(
+                    error.message || "Could not delete report. Please try again."
+                );
+
+                deleteButton.disabled = false;
+                deleteButton.textContent = "Delete";
+            }
+        });
+
         reportCard.append(
             reportName,
             reportType,
-            reportDate
+            reportDate,
+            deleteButton
         );
 
         historyContainer.appendChild(reportCard);
