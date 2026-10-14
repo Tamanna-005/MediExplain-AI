@@ -128,6 +128,81 @@ router.get("/", authMiddleware, async function (req, res) {
 });
 
 
+ // View an uploaded report belonging to the logged-in user
+router.get("/:id/view", authMiddleware, async function (req, res) {
+    try {
+        if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid report ID"
+            });
+        }
+
+        const report = await Report.findOne({
+            _id: req.params.id,
+            userId: req.user.userId
+        });
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found"
+            });
+        }
+
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            path.basename(report.filePath)
+        );
+
+        // Confirm the stored file exists
+        try {
+            await fs.access(filePath);
+        } catch {
+            return res.status(404).json({
+                success: false,
+                message: "Report file not found on the server"
+            });
+        }
+
+        // Serve only supported file types
+        const allowedTypes = [
+            "application/pdf",
+            "image/jpeg",
+            "image/png"
+        ];
+
+        if (!allowedTypes.includes(report.fileType)) {
+            return res.status(415).json({
+                success: false,
+                message: "Unsupported report file type"
+            });
+        }
+
+        res.setHeader("Content-Type", report.fileType);
+        res.setHeader(
+            "Content-Disposition",
+            `inline; filename="report-${report._id}${report.fileType === "application/pdf" ? ".pdf" : report.fileType === "image/jpeg" ? ".jpg" : ".png"}"`
+        );
+        res.setHeader("X-Content-Type-Options", "nosniff");
+        res.setHeader("Cache-Control", "private, no-store");
+
+        return res.sendFile(filePath);
+
+    } catch (error) {
+        console.error("View report error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error while opening report"
+        });
+    }
+});
+
+
+
  // Delete a report belonging to the logged-in user
 router.delete("/:id", authMiddleware, async function (req, res) {
     try {

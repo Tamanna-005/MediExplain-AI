@@ -280,6 +280,75 @@ function displayReportHistory(reports) {
         deleteButton.className = "button button-danger";
         deleteButton.textContent = "Delete";
 
+        
+const viewButton = document.createElement("button");
+viewButton.type = "button";
+viewButton.className = "button button-primary";
+viewButton.textContent = "View";
+
+viewButton.addEventListener("click", async function () {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Open a blank tab immediately to avoid popup blocking.
+    const reportWindow = window.open("about:blank", "_blank");
+
+    if (!reportWindow) {
+        window.alert("Please allow pop-ups to view your report.");
+        return;
+    }
+
+    viewButton.disabled = true;
+    viewButton.textContent = "Opening...";
+
+    try {
+        const response = await fetch(
+            `http://localhost:5000/api/reports/${encodeURIComponent(report._id || report.id)}/view`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        if (response.status === 401) {
+            reportWindow.close();
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+            return;
+        }
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || "Could not open report.");
+        }
+
+        const blob = await response.blob();
+        const fileUrl = URL.createObjectURL(blob);
+
+        reportWindow.location.href = fileUrl;
+
+        // Release the temporary URL after the new tab has had time to load.
+        setTimeout(function () {
+            URL.revokeObjectURL(fileUrl);
+        }, 60000);
+
+    } catch (error) {
+        console.error("View report error:", error);
+        reportWindow.close();
+        window.alert(error.message || "Could not open report.");
+    } finally {
+        viewButton.disabled = false;
+        viewButton.textContent = "View";
+    }
+});
+
+
         deleteButton.addEventListener("click", async function () {
             const confirmed = window.confirm(
                 `Are you sure you want to delete "${report.fileName}"?`
@@ -342,12 +411,13 @@ function displayReportHistory(reports) {
             }
         });
 
-        reportCard.append(
-            reportName,
-            reportType,
-            reportDate,
-            deleteButton
-        );
+       reportCard.append(
+    reportName,
+    reportType,
+    reportDate,
+    viewButton,
+    deleteButton
+);
 
         historyContainer.appendChild(reportCard);
     });
