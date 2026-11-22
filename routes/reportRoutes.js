@@ -4,6 +4,7 @@ const path = require("path");
 const Report = require("../models/Report");
 const authMiddleware = require("../middleware/authMiddleware");
 const fs = require("fs/promises");
+const { extractPdfText } = require("../services/pdfService");
 
 const router = express.Router();
 
@@ -103,7 +104,7 @@ router.post(
 );
 
 
- // Get report history for the logged-in user
+// Get report history for the logged-in user
 router.get("/", authMiddleware, async function (req, res) {
     try {
         const reports = await Report.find({
@@ -128,7 +129,68 @@ router.get("/", authMiddleware, async function (req, res) {
 });
 
 
- // View an uploaded report belonging to the logged-in user
+// Analyze an uploaded PDF and extract its text
+router.post("/:id/analyze", authMiddleware, async function (req, res) {
+    try {
+        if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid report ID"
+            });
+        }
+
+        const report = await Report.findOne({
+            _id: req.params.id,
+            userId: req.user.userId
+        });
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found"
+            });
+        }
+
+        // Only PDF reports can be analyzed at this stage
+        if (report.fileType !== "application/pdf") {
+            return res.status(400).json({
+                success: false,
+                message: "Currently, only PDF reports can be analyzed"
+            });
+        }
+
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            path.basename(report.filePath)
+        );
+
+        // Confirm the PDF exists
+        await fs.access(filePath);
+
+        // Extract text from normal or scanned PDF
+        const extractedText = await extractPdfText(filePath);
+
+        return res.status(200).json({
+            success: true,
+            message: "Report text extracted successfully",
+            reportId: report._id,
+            extractedText: extractedText
+        });
+
+    } catch (error) {
+        console.error("Report analysis error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error while analyzing report"
+        });
+    }
+});
+
+
+// View an uploaded report belonging to the logged-in user
 router.get("/:id/view", authMiddleware, async function (req, res) {
     try {
         if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
@@ -202,8 +264,7 @@ router.get("/:id/view", authMiddleware, async function (req, res) {
 });
 
 
-
- // Delete a report belonging to the logged-in user
+// Delete a report belonging to the logged-in user
 router.delete("/:id", authMiddleware, async function (req, res) {
     try {
         if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
