@@ -4,6 +4,7 @@ const path = require("path");
 const Report = require("../models/Report");
 const authMiddleware = require("../middleware/authMiddleware");
 const fs = require("fs/promises");
+const { extractTextFromImage } = require("../services/imageOcrService");
 const { extractPdfText } = require("../services/pdfService");
 
 const router = express.Router();
@@ -129,7 +130,7 @@ router.get("/", authMiddleware, async function (req, res) {
 });
 
 
-// Analyze an uploaded PDF and extract its text
+// Analyze an uploaded PDF or image and extract its text
 router.post("/:id/analyze", authMiddleware, async function (req, res) {
     try {
         if (!/^[a-fA-F0-9]{24}$/.test(req.params.id)) {
@@ -151,11 +152,16 @@ router.post("/:id/analyze", authMiddleware, async function (req, res) {
             });
         }
 
-        // Only PDF reports can be analyzed at this stage
-        if (report.fileType !== "application/pdf") {
+        const supportedTypes = [
+            "application/pdf",
+            "image/jpeg",
+            "image/png"
+        ];
+
+        if (!supportedTypes.includes(report.fileType)) {
             return res.status(400).json({
                 success: false,
-                message: "Currently, only PDF reports can be analyzed"
+                message: "Only PDF, JPG and PNG reports can be analyzed"
             });
         }
 
@@ -166,11 +172,18 @@ router.post("/:id/analyze", authMiddleware, async function (req, res) {
             path.basename(report.filePath)
         );
 
-        // Confirm the PDF exists
+        // Confirm the uploaded file exists
         await fs.access(filePath);
 
-        // Extract text from normal or scanned PDF
-        const extractedText = await extractPdfText(filePath);
+        let extractedText;
+
+        if (report.fileType === "application/pdf") {
+            // Extract text from a normal or scanned PDF
+            extractedText = await extractPdfText(filePath);
+        } else {
+            // Use Tesseract to read text from a JPG or PNG image
+            extractedText = await extractTextFromImage(filePath);
+        }
 
         return res.status(200).json({
             success: true,
